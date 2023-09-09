@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.product_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Default font family */
+        }
+
+        h1 {
+            font-family: "Your Custom Font", Arial, sans-serif; /* Custom font for the heading */
+            /* Add other styles as needed */
+        }
+
+        p {
+            font-family: "Your Custom Font", Arial, sans-serif; /* Custom font for the description */
+            font-size: 16px; /* Adjust the font size as needed */
+            color: #333; /* Text color */
+            /* Add other styles as needed */
+        }
+
+        /* Add more CSS styles for other elements as needed */
+
+    </style>
+</head>
+<body>
+    <h1>{{ product.product_name }}</h1>
+    <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
+    <h4><p>{{ product.product_description }}</p></h4>
+    <h3><p>Цена: {{ product.product_price }} сум</p></h3>
+    <a href="{% url 'home' %}">Вернуться к списку продуктов</a>
+</body>
+</html>

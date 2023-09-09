@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список продуктов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex; /* Use flexbox to align items horizontally */
+            justify-content: space-between; /* Space between title and button */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin: 10px;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            display: flex; /* Use flexbox to arrange image and text horizontally */
+            align-items: center; /* Vertically center image and text */
+        }
+
+        img {
+            max-width: 100px; /* Set a maximum width for the image */
+            margin-right: 10px; /* Add some spacing between the image and text */
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>
+    {% if request.user.is_authenticated %}
+        Список продуктов
+        <span style="margin-right: 10px; color: #fff;"></span>
+        <a href="{% url 'register' %}" style="color: #fff;">{{ user.username }}</a>
+        <span style="margin: 0 -400px; color: #fff;">|</span>
+        <a href="{% url 'logout' %}" style="color: #fff;">Выйти</a>
+    {% else %}
+    Список продуктов
+        <span style="margin-right: 10px; color: #fff;"></span>
+        <a href="{% url 'register' %}" style="color: #fff;">Регистрация</a>
+        <span style="margin: 0 -400px; color: #fff;">|</span>
+        <a href="{% url 'login' %}" style="color: #fff;">Войти</a>
+    {% endif %}
+</h1>
+
+
+    <ul>
+        {% for product in accessor %}
+            <li>
+                <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
+                <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
