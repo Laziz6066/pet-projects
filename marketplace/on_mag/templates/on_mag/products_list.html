@@ -15,8 +15,8 @@
             color: #fff;
             padding: 10px;
             text-align: center;
-            display: flex; /* Use flexbox to align items horizontally */
-            justify-content: space-between; /* Space between title and button */
+            display: flex;
+            justify-content: space-between;
         }
 
         ul {
@@ -29,16 +29,50 @@
             margin: 10px;
             padding: 10px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-            display: flex; /* Use flexbox to arrange image and text horizontally */
-            align-items: center; /* Vertically center image and text */
+            display: flex;
+            align-items: center;
         }
 
         img {
-            max-width: 100px; /* Set a maximum width for the image */
-            margin-right: 10px; /* Add some spacing between the image and text */
+            max-width: 100px;
+            margin-right: 10px;
         }
 
         a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Pagination styles */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            margin: 0;
+        }
+
+        .page-num {
+            background-color: #fff;
+            margin: 0 5px; /* Add spacing between pagination items */
+            padding: 5px 10px;
+            border: 1px solid #333;
+        }
+
+        .page-num-selected {
+            background-color: #333;
+            color: #fff;
+            margin: 0 5px;
+            padding: 5px 10px;
+        }
+
+        .page-num a {
             text-decoration: none;
             color: #333;
             font-weight: bold;
@@ -50,26 +84,53 @@
     {% if request.user.is_authenticated %}
         Список продуктов
         <span style="margin-right: 10px; color: #fff;"></span>
-        <a href="{% url 'register' %}" style="color: #fff;">{{ user.username }}</a>
+        <span style="color: #fff;">{{ user.username }}</span>
         <span style="margin: 0 -400px; color: #fff;">|</span>
         <a href="{% url 'logout' %}" style="color: #fff;">Выйти</a>
     {% else %}
     Список продуктов
+        <a href="{% url 'add_product' %}" style="color: #fff;">Добавить продукт</a>
         <span style="margin-right: 10px; color: #fff;"></span>
         <a href="{% url 'register' %}" style="color: #fff;">Регистрация</a>
-        <span style="margin: 0 -400px; color: #fff;">|</span>
+        <span style="margin: 0 -170px; color: #fff;">|</span>
         <a href="{% url 'login' %}" style="color: #fff;">Войти</a>
     {% endif %}
 </h1>
 
+<ul>
+    {% for product in accessor %}
+        <li>
+            <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
+            <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
+        </li>
+    {% endfor %}
+</ul>
 
-    <ul>
-        {% for product in accessor %}
-            <li>
-                <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
-                <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
-            </li>
+<div class="pagination-container">
+    <ul class="pagination">
+        <li class="page-num">
+            <a href="?page=1">1</a>
+        </li>
+        {% if page_obj.paginator.num_pages > 5 %}
+        {% endif %}
+        {% for p in page_obj.paginator.page_range %}
+             {% if p >= page_obj.number|add:'-2' and p <= page_obj.number|add:'2' %}
+                {% if page_obj.number == p %}
+                    <li class="page-num-selected">{{ p }}</li>
+                {% else %}
+                    <li class="page-num">
+                        <a href="?page={{ p }}">{{ p }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
         {% endfor %}
+        {% if page_obj.paginator.num_pages > 5 %}
+        {% endif %}
+        <li class="page-num">
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        </li>
     </ul>
+</div>
+
 </body>
 </html>

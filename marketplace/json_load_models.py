@@ -9,7 +9,7 @@ from on_mag.models import Products
 import json
 
 
-with open('C:/Users/laziz/PycharmProjects/pet-projects/marketplace/static/result_list.json', 'r', encoding='utf-8') as file:
+with open('/marketplace/utils/result_list.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 for item in data:

@@ -7,6 +7,7 @@ from seleniumwire import webdriver
 
 PROXY = "KQqSdM:bPEYT5@45.10.249.143:8000"
 
+
 async def fetch_data(page):
     service = Service(
         executable_path="C:/Users/laziz/PycharmProjects/pet-projects/kwork/parser_auto_ru/chromedriver.exe"

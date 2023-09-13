@@ -29,6 +29,25 @@
     <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
     <h4><p>{{ product.product_description }}</p></h4>
     <h3><p>Цена: {{ product.product_price }} сум</p></h3>
+
+    {% if comments_products %}
+    <p>Комментарии</p>
+        {% for comment in comments_products %}
+            <li>{{ comment.text }}</li>
+        {% endfor %}
+    {% else %}
+    <p>Пока нет комментариев</p>
+    {% endif %}
+    <hr>
+    <p>Добавить комментарии</p>
+    <div class="col-4">
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить</button>
+    </form>
+    </div>
+    <p>
     <a href="{% url 'home' %}">Вернуться к списку продуктов</a>
 </body>
 </html>

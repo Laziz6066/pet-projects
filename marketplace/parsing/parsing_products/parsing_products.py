@@ -73,7 +73,7 @@ for i in product_card_wrapper:
     })
     assitant(f'Страниц обработано: {count}, осталось {remained}')
 
-with open('C:/Users/laziz/PycharmProjects/pet-projects/marketplace/static/result_list.json', 'w', encoding='utf-8') as file:
+with open('/marketplace/utils/result_list.json', 'w', encoding='utf-8') as file:
     json.dump(product_descriptions, file, indent=4, ensure_ascii=False)
 
 driver.close()
