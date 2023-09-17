@@ -100,7 +100,7 @@
 <ul>
     {% for product in accessor %}
         <li>
-            <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
+            <img src="static/{{ product.product_image }}" alt="{{ product.product_name }}" />
             <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
         </li>
     {% endfor %}

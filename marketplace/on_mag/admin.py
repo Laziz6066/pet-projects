@@ -3,8 +3,8 @@ from .models import Products, Comments
 
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product_name',)
-    list_display_links = ('id', 'product_name',)
+    list_display = ('id', 'product_name', 'product_image',)
+    list_display_links = ('id', 'product_name', 'product_image',)
 
 
 class CommentAdmin(admin.ModelAdmin):
