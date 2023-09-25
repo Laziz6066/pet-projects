@@ -77,15 +77,32 @@
             color: #333;
             font-weight: bold;
         }
+        .messages {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 1000; /* Поднимите сообщение над другими элементами */
+        }
     </style>
+
+
 </head>
 <body>
 <h1>
     {% if request.user.is_authenticated %}
         Список продуктов
+        <a href="{% url 'add_product' %}" style="color: #fff;">Добавить продукт</a>
         <span style="margin-right: 10px; color: #fff;"></span>
-        <span style="color: #fff;">{{ user.username }}</span>
-        <span style="margin: 0 -400px; color: #fff;">|</span>
+        <a href="{% url 'view_cart' %}" style="color: #fff;">Корзина</a>
+        <span style="margin-right: 10px; color: #fff;"></span>
+        <a href="{% url 'update_user' user.id %}" style="color: #fff;">{{ user.username }}</a>
+        <span style="margin: 0 -100px; color: #fff;">|</span>
         <a href="{% url 'logout' %}" style="color: #fff;">Выйти</a>
     {% else %}
     Список продуктов
@@ -97,20 +114,50 @@
     {% endif %}
 </h1>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<script>
+    function hideMessages() {
+        var messages = document.querySelectorAll('.messages');
+        messages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.display = 'none';
+            }, 1000);
+        });
+    }
+    window.onload = hideMessages;
+</script>
+
 <ul>
     {% for product in accessor %}
-        <li>
-            <img src="static/{{ product.product_image }}" alt="{{ product.product_name }}" />
+    <li>
+        <div class="product-details">
+            <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
             <a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a>
-        </li>
+            <span>Цена: {{ product.product_price }} сум</span>
+            {% if request.user.is_authenticated %}
+            <form method="post" action="{% url 'add_to_cart' product.slug %}">
+                {% csrf_token %}
+                <button type="submit">Добавить в корзину</button>
+            </form>
+            {% endif %}
+        </div>
+    </li>
     {% endfor %}
 </ul>
+
 
 <div class="pagination-container">
     <ul class="pagination">
         <li class="page-num">
             <a href="?page=1">1</a>
-        </li>
+        </li>  
         {% if page_obj.paginator.num_pages > 5 %}
         {% endif %}
         {% for p in page_obj.paginator.page_range %}

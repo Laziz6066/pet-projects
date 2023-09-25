@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о пользователе</title>
+</head>
+<body>
+<h1>Профиль</h1>
+
+<ul>
+    <li>
+        Ник: {{ user.username }}
+    </li>
+    <li>
+        Имя: {{ user.first_name }}
+    </li>
+    <li>
+        Фамилия: {{ user.last_name }}
+    </li>
+    <li>
+        Email: {{ user.email }}
+    </li>
+</ul>
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить изменения</button>
+    </form>
+
+<ul><a href="{% url 'home' %}">Вернуться в главную страницу</a></ul>
+</body>
+</html>

@@ -20,16 +20,39 @@
             /* Add other styles as needed */
         }
 
-        /* Add more CSS styles for other elements as needed */
+        .messages {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 1000; /* Поднимите сообщение над другими элементами */
+        }
 
     </style>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 </head>
 <body>
     <h1>{{ product.product_name }}</h1>
     <img src="{{ product.product_image }}" alt="{{ product.product_name }}" />
     <h4><p>{{ product.product_description }}</p></h4>
-    <h3><p>Цена: {{ product.product_price }} сум</p></h3>
-
+    <h3><p>Цена: {{ product.product_price }} сум | В наличии: {{ product.quantity }}</p></h3>
+    {% if request.user.is_authenticated %}
+    <form method="post" action="{% url 'add_to_cart' product.slug %}">
+    {% csrf_token %}
+    <button type="submit">Добавить в корзину</button>
+    </form>
+    {% endif %}
     {% if comments_products %}
     <p>Комментарии</p>
         {% for comment in comments_products %}
@@ -49,5 +72,18 @@
     </div>
     <p>
     <a href="{% url 'home' %}">Вернуться к списку продуктов</a>
+
+<script>
+    function hideMessages() {
+        var messages = document.querySelectorAll('.messages');
+        messages.forEach(function (message) {
+            setTimeout(function () {
+                message.style.display = 'none';
+            }, 1000);
+        });
+    }
+    window.onload = hideMessages;
+</script>
+
 </body>
 </html>

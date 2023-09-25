@@ -12,3 +12,4 @@ def assitant(mytext):
         if p.get_state() == vlc.State.Ended:
             break
     p.release()
+

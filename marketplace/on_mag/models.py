@@ -10,6 +10,7 @@ class Products(models.Model):
     product_image = models.FileField(null=True, blank=True, upload_to='static/', verbose_name='product_image')
     product_description = models.TextField(verbose_name='product_description')
     product_price = models.IntegerField(verbose_name='product_price')
+    quantity = models.IntegerField(default=1, verbose_name='quantity')
     slug = AutoSlugField(unique=True, populate_from='product_name')
 
     def save(self, *args, **kwargs):
@@ -32,3 +33,21 @@ class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='user')
     create_date = models.DateTimeField(auto_now=True)
     text = models.TextField(verbose_name='comments_text')
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField('Products', through='CartItem')
+
+    def total_price(self):
+        total = sum(item.product.product_price for item in self.cartitem_set.all())
+        return total
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+
+    def item_total(self):
+        return self.product.product_price * self.quantity
