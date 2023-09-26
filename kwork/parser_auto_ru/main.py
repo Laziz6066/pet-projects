@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 from seleniumwire import webdriver
 
-PROXY = "KQqSdM:bPEYT5@45.10.249.143:8000"
+PROXY = "My_Proxy"
 
 
 async def fetch_data(page):
